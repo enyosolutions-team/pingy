@@ -56,7 +56,7 @@ class Pingy {
     const url = config.dsn;
     const body = {
       ...data,
-      ...tags,
+      ...(this.tags || {}),
       key: this.jobKey,
       hostname: config.hostname,
 
