@@ -16,7 +16,7 @@ if (argv.help || argv.h) {
   console.log('\nOptions: ');
   console.log('\-h | --help :  Help');
   console.log('\-k | --key :   The key to use to identity the job');
-  console.log('\-a | --app :   The key to use to identity the job');
+  console.log('\-a | --app :   The key to use to app related to the job');
   console.log('\-c : --create : Auto create the task and if needed');
   console.log('\nUsage: ');
   console.log('\tactions:  init | config | set | log | ping | start | finish | fail');

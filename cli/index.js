@@ -10,11 +10,20 @@ const argv = require('minimist')(process.argv.slice(2));
  * @class Pingy
  */
 class Pingy {
-  constructor(jobKey = null) {
+  constructor(jobKey = null, appName = null, extraConfig = {}) {
     this.jobId = null;
     // the job key is the name of the job or the file where the job is running
     this.jobKey = jobKey || process.argv[1] || Date.now();
+    if (appName) {
+      this.setAppName(appName);
+    }
     this.config = config;
+    if (extraConfig) {
+      this.config = {
+        ...this.config,
+        ...extraConfig
+      };
+    }
     this.tags = {};
     // this shoud create a new job
   }
@@ -179,4 +188,4 @@ class Pingy {
     this.send({ ...data, status: 'failed', logs: (data.logs || []).push(err && err.message) });
   }
 }
-module.exports = (key) => new Pingy(key);
+module.exports = (...args) => new Pingy(...args);
