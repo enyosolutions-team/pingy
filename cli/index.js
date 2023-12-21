@@ -1,7 +1,6 @@
 const axios = require('axios');
 const debug = require('debug')('pingy');
 const config = require('./config');
-const argv = require('minimist')(process.argv.slice(2));
 
 
 /**
@@ -14,17 +13,18 @@ class Pingy {
     this.jobId = null;
     // the job key is the name of the job or the file where the job is running
     this.jobKey = jobKey || process.argv[1] || Date.now();
+    this.tags = {};
     if (appName) {
       this.setAppName(appName);
     }
     this.config = config;
-    if (extraConfig) {
-      this.config = {
-        ...this.config,
-        ...extraConfig
-      };
-    }
-    this.tags = {};
+    this.config = {
+      ...this.config,
+      ...(extraConfig || {}),
+      apiKey: undefined,
+      dsn: undefined,
+      'api-key': undefined,
+    };
     // this shoud create a new job
   }
   /**
@@ -33,17 +33,23 @@ class Pingy {
    * @memberof Pingy
   */
   init(config) {
+    if (!config) {
+      return
+    }
     const { dsn, apiKey } = config;
     config.dsn = dsn || config.dsn;
     config.apiKey = apiKey || config.apiKey;
   }
 
   setTag(key, value) {
+    if (!this.tags) {
+      this.tags = {};
+    }
     this.tags[key] = value;
   }
 
   setAppName(value) {
-    this.tags['appName'] = value;
+    this.setTag('appname', value);
   }
 
   send(data = {}) {
