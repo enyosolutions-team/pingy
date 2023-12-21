@@ -42,12 +42,8 @@ class Pingy {
     this.tags[key] = value;
   }
 
-  setAppName(key, value) {
-    this.tags[key] = value;
-  }
-
-  setKey(key, value) {
-    this.tags[key] = value;
+  setAppName(value) {
+    this.tags['appName'] = value;
   }
 
   send(data = {}) {
