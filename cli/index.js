@@ -1,4 +1,5 @@
 const axios = require('axios');
+const util = require('util');
 const debug = require('debug')('pingy');
 const config = require('./config');
 
@@ -122,7 +123,7 @@ class Pingy {
   finish(data) { return this.send({ ...data, status: 'finished' }); }
   end(data) { return this.send({ ...data, status: 'finished' }); }
   ping(data) { return this.send({ ...data, status: 'running' }); }
-  log(obj) {
+  log(obj, ...rest) {
     if (obj instanceof Error) {
       return this.send({
         log: err && err.message,
@@ -131,7 +132,7 @@ class Pingy {
     }
     else if (typeof obj === 'string') {
       return this.send({
-        log: obj,
+        log: util.format(obj, ...rest),
         level: 'info',
         status: 'running'
       });
